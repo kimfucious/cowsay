@@ -32,9 +32,8 @@ This repo is comprised of three main directories:
 
 1. [Docker](https://www.docker.com/products/docker-desktop)
 2. [Docker Compose](https://docs.docker.com/compose/install/)
-3. [Node.js](https://nodejs.org/)
 
-All of the above services are provisioned via Docker, using Docker Compose.
+All services are provisioned via Docker, using Docker Compose.
 
 ## Setup
 
@@ -49,16 +48,17 @@ git clone https://github.com/kimfucious/cowsay.git
 There is no initial dev database. You need to first create a new directory `mongodb_data` and set permissions on it, like so:
 
 ```console
+mkdir mongodb_data
 sudo chown -hR 1001:1001 ./mongodb_data/
 ```
 
-The db gets created at first run, but you need to ensure that the file permissions are set correctly on `mongodb_data`, as just stated.
+The db gets created at first run, but you need to ensure that the file permissions are set correctly on `mongodb_data`, as just stated, in order for things to work.
 
 > See note [here](https://github.com/bitnami/bitnami-docker-mongodb#persisting-your-database) for details.
 
 env files have been intentionally not excluded from this repo, but should be if you ever use this repo for anything going forward.
 
-1. The `app.listen()` function and `mongoose.connect()` functions have been separated out of `app.js` and placed in `start.js` so as to separate facilitate testing.
+Side note: The `app.listen()` function and `mongoose.connect()` functions have been separated out of `app.js` and placed in `start.js` so as to separate facilitate testing.
 
 > Always exclude `.env` from your repo by adding to `.gitignore`! See [here](https://www.npmjs.com/package/dotenv#should-i-commit-my-env-file) for details.
 
@@ -66,7 +66,7 @@ env files have been intentionally not excluded from this repo, but should be if 
 
 ### Run Docker Compose
 
-1. Navigate to the root of the app
+1. After you've done the above, navigate to the root of this cloned repo
 2. Run `docker-compose up`
 3. The first time run will setup MongoDB. You should see something like the following amidst the output:
 
@@ -76,15 +76,7 @@ mongodb_1  |  18:02:30.89 INFO  ==> Deploying MongoDB from scratch...
 
 Note: Subsequent starts will not create users! See [here](#rebuild-the-database) for help on that.
 
-1. MongoDB is up when you see `waiting for connections on port 27017`
-
-### Start the API
-
-1. Open a new console
-2. Run `npm start`
-3. The app is up with you see `Connected!`
-
-## Testing
+MongoDB is up when you see `waiting for connections on port 27017`
 
 ## Other Stuff
 
