@@ -1,0 +1,10 @@
+FROM starefossen/ruby-node:alpine 
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json /app/ 
+RUN gem install cowsay
+RUN apk update && apk add fortune && rm -rf /var/cache/apk/* 
+RUN npm install
+COPY . /app/ 
+EXPOSE 4000
+CMD ["npm", "run", "watch" ]

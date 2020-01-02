@@ -1,0 +1,21 @@
+export const cows = [
+  "Ren",
+  "Dragon",
+  "Turtle",
+  "Ghostbusters",
+  "Tux",
+  "Beavis",
+  "Sheep",
+  "Stegosaurus",
+  "Elephant",
+  "Frogs",
+  "Turkey",
+  "Bunny",
+  "Moose",
+  "Cheese",
+  "Daemon",
+  "Cow",
+  "Stimpy",
+  "Koala",
+  "Kitty"
+];

@@ -1,0 +1,38 @@
+version: "3"
+services:
+  api:
+    # restart: always
+    build:
+      context: ./cowsay-api
+      dockerfile: Dockerfile
+    command: npm run watch
+    container_name: api
+    depends_on:
+      - db
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./cowsay-api:/app
+      - /app/node_modules
+  db:
+    container_name: db
+    env_file:
+      - .env
+    image: "bitnami/mongodb:latest"
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb_data:/bitnami
+  web:
+    build:
+      context: ./cowsay-app
+      dockerfile: Dockerfile
+    container_name: web
+    depends_on:
+      - api
+      - db
+    ports:
+      - "80:3000"
+    volumes:
+      - ./cowsay-app:/app
+      - /app/node_modules
