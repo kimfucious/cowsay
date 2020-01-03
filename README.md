@@ -24,9 +24,9 @@ This repo is comprised of three main directories:
 
 1. cowsay-app is a front-end React web application
 2. cowsay-api is a backend Express API, using [express-graphql](https://github.com/graphql/express-graphql)
-3. mongodb_data is persistant storage MongoDB database.
+3. mongodb_data is persistant storage for a MongoDB database
 
-☝️ You need to create the mongodb_data directory and give it the correct permissions.
+☝️ You need to create the mongodb_data directory and give it the correct permissions. See [setup](#setup) step 3 below.
 
 ## Prerequisites
 
@@ -66,8 +66,6 @@ sudo chown -hR 1001:1001 ./mongodb_data/
 mongodb_1  |  18:02:30.89 INFO  ==> Deploying MongoDB from scratch...
 ```
 
-☝️ Subsequent starts will not create db users! See [here](#rebuild-the-database) for help on that.
-
 MongoDB is up when you see `waiting for connections on port 27017`
 
 ## Notes
@@ -76,15 +74,19 @@ MongoDB is up when you see `waiting for connections on port 27017`
 
   - The web app will run on (port 80) at http://localhost
   - The api will run on port 4000. You can access `graphiql` at http://localhost:4000/graphql
-  - The database will run on port 27017. You can access it using [Compass](https://www.mongodb.com/products/compass) with mongodb://user:secret@localhost:27017/cowsay?authSource=cowsay.
+  - The database will run on port 27017. You can access it, using [Compass](https://www.mongodb.com/products/compass), with mongodb://user:secret@localhost:27017/cowsay?authSource=cowsay
 
 - Changes made to the app or api code will restart the respective services on save.
 
-- The db gets created with users on first run of `docker-compose`, but, again, you need to ensure that the file permissions are set correctly on `mongodb_data`, as just stated, in order for things to work. See note [here](https://github.com/bitnami/bitnami-docker-mongodb#persisting-your-database) for details.
+- The db gets created on first run of `docker-compose`, but, again, you need to ensure that the file permissions are set correctly on `mongodb_data`, as just stated, in order for things to work. See note [here](https://github.com/bitnami/bitnami-docker-mongodb#persisting-your-database) for details.
 
-- An initial admin user, `elsie@cowsay.moo`, is created when the API is first run. The initial password is set to `Passw0rd123`.
+- An initial `db` root and admin user are created on the first run of 1docker-compose`.
 
-- env files are found in each directory, including the root directory. These files have been intentionally _not excluded_ from this repo, but should be, if/when you ever fork a copy of this repo for anything going forward. See [here](https://www.npmjs.com/package/dotenv#should-i-commit-my-env-file) for details.
+☝️ Subsequent starts will not create db users, if/when you change environement variables! If you want to do that, rebuild the database. See [here](#rebuild-the-database) for help on that.
+
+- An initial `web-app` admin user, `elsie@cowsay.moo`, is created when the API is first run. The initial password is set to `Passw0rd123`. This can be changed in `cowsay-api/src/start.js`.
+
+- Env files are found in each directory, including the root directory. These files have been intentionally _not excluded_ from this repo, but should be, if/when you ever fork a copy of this repo for anything going forward. See [here](https://www.npmjs.com/package/dotenv#should-i-commit-my-env-file) for details.
 
 - Yes, the Auth0 client secret has been rotated.
 
