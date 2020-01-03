@@ -135,7 +135,7 @@ export const gqlResolvers = {
 
     return {
       _id: savedUser._id.toString(),
-      email: savedUser.emai.toLowerCase(),
+      email: savedUser.email.toLowerCase(),
       exp,
       isAdmin: savedUser.isAdmin,
       token
