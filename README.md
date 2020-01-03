@@ -70,15 +70,15 @@ MongoDB is up when you see `waiting for connections on port 27017`
 
 ## Notes
 
-- Docker-compose will pull images, then build and run three containers:
+- Docker-compose will pull images, then build and run three containers (this can take a while on the first run):
 
   - The web app will run on (port 80) at http://localhost
   - The api will run on port 4000. You can access `graphiql` at http://localhost:4000/graphql
   - The database will run on port 27017. You can access it, using [Compass](https://www.mongodb.com/products/compass), with mongodb://user:secret@localhost:27017/cowsay?authSource=cowsay
 
-  This is all configured in `docker-compose.yml` and the Dockerfile files in the app and api directorys.
+  This is all configured in `docker-compose.yml` and the Dockerfile files in the app and api directories.
 
-- Changes made to the app or api code will restart the respective services _within the running containers_ on save, thanks to [nodemon](https://nodemon.io/).
+- Changes made to the app or api code will restart the respective services _within the running containers_ on save, thanks to [nodemon](https://nodemon.io/). Changes to npm packages will not work without rebuilding the affected Docker image. See [here](#rebuilding-docker-images) for details.
 
 - The db gets created on first run of `docker-compose`, but, again, you need to ensure that the file permissions are set correctly on `mongodb_data`, as just stated, in order for things to work. See note [here](https://github.com/bitnami/bitnami-docker-mongodb#persisting-your-database) for details.
 
