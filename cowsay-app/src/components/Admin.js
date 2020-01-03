@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Collapse, Button } from "reactstrap";
+import { Flipper, Flipped } from "react-flip-toolkit";
 import axios from "axios";
 import {
   Context,
@@ -76,39 +77,40 @@ export const Admin = () => {
   }, [context.handleLogout, context.profileState.token]);
   const renderUsers = () =>
     users.map(user => (
-      <li
-        key={user._id}
-        className="d-flex flex-column list-group-item align-items-center"
-        style={{ backgroundColor: "transparent", borderColor: "#4af626" }}
-      >
-        <div className="d-flex align-items-center justify-content-between w-100">
-          <div>
-            {user.email} {user.isAdmin ? "(admin)" : ""}
+      <Flipped key={user._id} flipId={user._id}>
+        <li
+          className="d-flex flex-column list-group-item align-items-center"
+          style={{ backgroundColor: "transparent", borderColor: "#4af626" }}
+        >
+          <div className="d-flex align-items-center justify-content-between w-100">
+            <div>
+              {user.email} {user.isAdmin ? "(admin)" : ""}
+            </div>
+            <Button
+              className="ml-auto"
+              color="link"
+              onClick={() => toggleIsOpen(user._id)}
+            >
+              {isOpen === user._id ? "CLOSE" : "EDIT"}
+            </Button>
           </div>
-          <Button
-            className="ml-auto"
-            color="link"
-            onClick={() => toggleIsOpen(user._id)}
-          >
-            {isOpen === user._id ? "CLOSE" : "EDIT"}
-          </Button>
-        </div>
-        <div>
-          <Collapse isOpen={isOpen === user._id}>
-            <ProfileForm
-              _id={context.profileState._id}
-              fromAdminPage={true}
-              initialState={initialState}
-              isAdmin={context.profileState.isAdmin}
-              isOpen={isOpen}
-              setUsers={setUsers}
-              token={context.profileState.token}
-              users={users}
-              userToBeModified={user}
-            />
-          </Collapse>
-        </div>
-      </li>
+          <div>
+            <Collapse isOpen={isOpen === user._id}>
+              <ProfileForm
+                _id={context.profileState._id}
+                fromAdminPage={true}
+                initialState={initialState}
+                isAdmin={context.profileState.isAdmin}
+                isOpen={isOpen}
+                setUsers={setUsers}
+                token={context.profileState.token}
+                users={users}
+                userToBeModified={user}
+              />
+            </Collapse>
+          </div>
+        </li>
+      </Flipped>
     ));
 
   const toggleIsOpen = id => {
@@ -132,7 +134,9 @@ export const Admin = () => {
         <div className="w-100" style={{ marginTop: "50px" }}>
           {/* <h1 className="display-4 mt-3 mt-sm-5 text-center">Admin</h1> */}
           <ul className="list-group flush mt-3 mt-sm-5">
-            {users.length ? renderUsers() : null}
+            {users.length ? (
+              <Flipper flipKey={users}>{renderUsers()}</Flipper>
+            ) : null}
           </ul>
         </div>
       )}
