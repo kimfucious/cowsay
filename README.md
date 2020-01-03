@@ -107,6 +107,24 @@ getCows: (args, req) => {
 
 ## Other Stuff
 
+### Rebuilding Docker images
+
+If you add npm packages to the app or api, these changes will cause the apps running in their containers to fail, because they are relying on an old verions of `package.json`.
+
+To get them running again, do the following:
+
+1. Optional - run Docker with the prune option:
+
+```console
+docker system prune
+```
+
+2. Run Docker Compose with the build option:
+
+```console
+docker-compose up --build
+```
+
 ### Rebuild the database
 
 1. `CTRL-C` in the terminal where your ran `docker-run-compose` to stop MongoDB
@@ -122,3 +140,7 @@ getCows: (args, req) => {
 - GraphQl error handling with `express-graphql` is not fun, I'll probably use [Apollo](https://www.apollographql.com/) on future projects, as [I've read](https://blog.apollographql.com/full-stack-error-handling-with-graphql-apollo-5c12da407210) that it deals with this better.
 - It's nigh impossible to prevent password managers, like 1Password, from grabbing at your form fields.
 - Using the [useReducer](https://reactjs.org/docs/hooks-reference.html#usereducer) React hook for state flow is doable, but I'm thinking that going full Redux would be better when working with lots of actions and/or more complex apps.
+
+```
+
+```
