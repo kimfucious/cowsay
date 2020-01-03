@@ -9,7 +9,6 @@ export const isAuthorized = (req, res, next) => {
       return next();
     }
 
-    console.log("AUTH Header", authHeader);
     const token = authHeader.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     if (!decodedToken) {
