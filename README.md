@@ -1,6 +1,6 @@
 # Multi-Tier Cowsay
 
-```shell
+```console
  ________
 | Hello! |
  --------
@@ -26,7 +26,7 @@ This repo is comprised of three main directories:
 2. cowsay-api is a backend Express API, using [express-graphql](https://github.com/graphql/express-graphql)
 3. mongodb_data is persistant storage for a MongoDB database
 
-🐮 You need to create the mongodb_data directory and give it the correct permissions. See [setup](#setup) step 3 below.
+🐮 You need to create the mongodb_data directory and give it the correct permissions. See [Setup](#setup) step 3 below.
 
 ## Prerequisites
 
@@ -113,3 +113,12 @@ getCows: (args, req) => {
 2. Delete the `mongodb` directory inside the `mongodb_data` folder without deleting the parent directory. Use `sudo rm -rf mongodb_data/mongodb/`, as permissions on folder aren't yours.
 3. Change the `docker-compose.yml` settings as desired.
 4. Run `docker-compose up`
+
+## Things learned and/or to be done differently
+
+- Clean up unfinished async calls in React [useEffect](https://reactjs.org/docs/hooks-effect.html) hooks, like [this](https://binarapps.com/blog/clean-up-request-in-useeffect-react-hook/).
+- Debouncing form value validation is interesting, but probably not worth the complexity. I prefer [Formik](https://jaredpalmer.com/formik/) and [onBlur](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) with [Yup](https://github.com/jquense/yup).
+- While homespun authentication is good to understand, I think others have already built better wheels. I like [Auth0](https://auth0.com/) and would implement a more sophisticated approach with both [Access](https://auth0.com/docs/tokens/access-tokens) and [Refresh](https://auth0.com/docs/tokens/refresh-token/current) tokens.
+- GraphQl error handling with `express-graphql` is not fun, I'll probably use [Apollo](https://www.apollographql.com/) on future projects, as [I've read](https://blog.apollographql.com/full-stack-error-handling-with-graphql-apollo-5c12da407210) that it deals with this better.
+- It's nigh impossible to prevent password managers, like 1Password, from grabbing at your form fields.
+- Using the [useReducer](https://reactjs.org/docs/hooks-reference.html#usereducer) React hook for state flow is doable, but I'm thinking that going full Redux would be better when working with lots of actions and/or more complex apps.
