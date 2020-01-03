@@ -68,6 +68,14 @@ mongodb_1  |  18:02:30.89 INFO  ==> Deploying MongoDB from scratch...
 
 MongoDB is up when you see `waiting for connections on port 27017`
 
+🐮 If you see a MongoDB timeout error search the log for the following:
+
+```console
+db     | mkdir: cannot create directory '/bitnami/mongodb': Permission denied
+```
+
+Most likely, there's a problem with that directory and/or it's permissions. See step 3 in [Setup](#setup) above.
+
 ## Notes
 
 - Docker-compose will pull images, then build and run three containers (this can take a while on the first run):
