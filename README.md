@@ -50,8 +50,8 @@ git clone https://github.com/kimfucious/cowsay.git
 🐮 There is no initial database. You need to first create a new directory `mongodb_data` and set permissions on it, like so:
 
 ```console
-mkdir mongodb_data
-sudo chown -hR 1001:1001 ./mongodb_data/
+mkdir mongodb_data \
+&& sudo chown -hR 1001:1001 ./mongodb_data/
 ```
 
 ## Get things running
