@@ -20,13 +20,14 @@ This repo demonstrates:
 3. JSON web token authentication
 4. Persistent data storage, using MongoDB
 
-This repo is comprised of three main directories:
+This repo is comprised of two main directories:
 
 1. cowsay-app is a front-end React web application
 2. cowsay-api is a backend Express API, using [express-graphql](https://github.com/graphql/express-graphql)
-3. mongodb_data is persistant storage for a MongoDB database
 
-🐮 You need to create the mongodb_data directory and give it the correct permissions. See [Setup](#setup) step 3 below.
+A third directory, mongodb_data, is required for the persistant storage of a MongoDB database
+
+🐮 You need to create the `mongodb_data` directory and give it the correct permissions. See [Setup](#setup) step 3 below.
 
 ## Prerequisites
 
@@ -45,7 +46,7 @@ git clone https://github.com/kimfucious/cowsay.git
 
 2. Change into the newly cloned directory
 
-3. Create `mongodb_data` directory and give set permissions on it:
+3. Create `mongodb_data` directory and set permissions on it:
 
 🐮 There is no initial database. You need to first create a new directory `mongodb_data` and set permissions on it, like so:
 
@@ -68,7 +69,7 @@ mongodb_1  |  18:02:30.89 INFO  ==> Deploying MongoDB from scratch...
 
 MongoDB is up when you see `waiting for connections on port 27017`
 
-🐮 If you see a MongoDB timeout error search the log for the following:
+🐮 If you see a MongoDB timeout error, search the log for the following:
 
 ```console
 db     | mkdir: cannot create directory '/bitnami/mongodb': Permission denied
@@ -78,9 +79,9 @@ Most likely, there's a problem with that directory and/or it's permissions. See 
 
 ## Notes
 
-- Docker-compose will pull images, then build and run three containers (this can take a while on the first run):
+- Docker-compose will pull images, build them, and run them in three discrete containers (this can take a while on the first run):
 
-  - The web app will run on (port 80) at http://localhost
+  - The web app will run on port 80 at http://localhost
   - The api will run on port 4000. You can access `graphiql` at http://localhost:4000/graphql
   - The database will run on port 27017. You can access it, using [Compass](https://www.mongodb.com/products/compass), with mongodb://user:secret@localhost:27017/cowsay?authSource=cowsay
 
@@ -88,21 +89,21 @@ Most likely, there's a problem with that directory and/or it's permissions. See 
 
 - Changes made to the app or api code will restart the respective services _within the running containers_ on save, thanks to [nodemon](https://nodemon.io/). Changes to npm packages will not work without rebuilding the affected Docker image. See [here](#rebuilding-docker-images) for details.
 
-- The db gets created on first run of `docker-compose`, but, again, you need to ensure that the file permissions are set correctly on `mongodb_data`, as just stated, in order for things to work. See note [here](https://github.com/bitnami/bitnami-docker-mongodb#persisting-your-database) for details.
+- The db gets created on first run of `docker-compose`, but again, you need to ensure that the file permissions are set correctly on `mongodb_data`, as just stated, in order for things to work. See note [here](https://github.com/bitnami/bitnami-docker-mongodb#persisting-your-database) for details.
 
-- An initial `db` root and admin user are created on the first run of `docker-compose`.
+- An initial `db` root and admin user (user) are created on the first run of `docker-compose`. These are set in the `.env` file in the root directory of this repo.
 
 🐮 Subsequent starts will not create db users, if/when you change environement variables! If you want to do that, rebuild the database. See [here](#rebuild-the-database) for help on that.
 
-- An initial `web-app` admin user, `elsie@cowsay.moo`, is created when the API is first run. The initial password is set to `Passw0rd123`. This can be changed in `cowsay-api/src/start.js`.
+- An initial `web-app` admin user, `elsie@cowsay.moo`, is created when the API is first run (when there are no users). The initial password is set to `Passw0rd123`. These can be changed in `cowsay-api/src/start.js`.
 
 - Env files are found in each directory, including the root directory. These files have been intentionally _not excluded_ from this repo, but should be, if/when you ever fork a copy of this repo for anything going forward. See [here](https://www.npmjs.com/package/dotenv#should-i-commit-my-env-file) for details.
 
-- Yes, the Auth0 client secret has been rotated.
+- Yes, the Auth0 client secret has been rotated; thanks.
 
-- The `app.listen()` function and `mongoose.connect()` functions have been separated out of `app.js` and placed in `start.js` so as to separate facilitate testing.
+- The `app.listen()` and `mongoose.connect()` functions have been separated out of `app.js` and placed in `start.js` so as to separate facilitate testing.
 
-- The API's token authentication is "manual", for demonstration purposes, rather than using a third-party solution.
+- The token authentication is "manual", for demonstration purposes, rather than using a third-party solution, though I may add something else later.
 
 - To test the API using `graphiql`, temporarily comment out the authorization lines in `cowsay_api/src/graphql/resolvers.js`, like this:
 
@@ -135,9 +136,11 @@ docker-compose up --build
 
 ### Rebuild the database
 
-1. `CTRL-C` in the terminal where your ran `docker-run-compose` to stop MongoDB
-2. Delete the `mongodb` directory inside the `mongodb_data` folder without deleting the parent directory. Use `sudo rm -rf mongodb_data/mongodb/`, as permissions on folder aren't yours.
-3. Change the `docker-compose.yml` settings as desired.
+If you want to change the user configuration of the MongoDB database, it's easiest to just delete the db and rebuild it.
+
+1. `CTRL-C` in the terminal where your ran `docker-run-compose` to stop all running containers
+2. Delete the `mongodb` directory inside the `mongodb_data` folder _without deleting the parent directory_. Use `sudo rm -rf mongodb_data/mongodb/`, as permissions on folder aren't yours.
+3. Change the `.env` variables in the root of this repo as desired.
 4. Run `docker-compose up`
 
 ## Things learned and/or to be done differently
@@ -148,7 +151,3 @@ docker-compose up --build
 - GraphQl error handling with `express-graphql` is not fun, I'll probably use [Apollo](https://www.apollographql.com/) on future projects, as [I've read](https://blog.apollographql.com/full-stack-error-handling-with-graphql-apollo-5c12da407210) that it deals with this better.
 - It's nigh impossible to prevent password managers, like 1Password, from grabbing at your form fields.
 - Using the [useReducer](https://reactjs.org/docs/hooks-reference.html#usereducer) React hook for state flow is doable, but I'm thinking that going full Redux would be better when working with lots of actions and/or more complex apps.
-
-```
-
-```
